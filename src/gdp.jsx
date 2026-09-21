@@ -240,27 +240,47 @@ export default function NigeriaGDP() {
   },[])
 
   useEffect(()=> {
-    console.log(realGdpError)
-  }, [realGdpError])
+    console.log(merged)
+  }, [merged])
 
   const compact = new Intl.NumberFormat("en", {notation: "compact", maximumFractionDigits: 1})
 
-  const CustomTooltip = ({ active, payload, label }) => {
-  console.log({active, payload, label})  
+  // const CustomTooltip = ({ active, payload, label }) => {
+  //   console.log({active, payload, label})  
 
-  if (!active || !payload || !payload.length) return null;
-  const d = merged.find(x => x.year === label);
-  console.log(d)
-  return (
-    <div style={{ background: "#0a0a0a", border: "1px solid #2a2a2a", borderRadius: 8, padding: "14px 18px", fontFamily: "monospace", fontSize: 12, color: "#e5e5e5", maxWidth: 220, boxShadow: "0 8px 32px rgba(0,0,0,0.6)" }}>
-      <div style={{ color: "#f59e0b", fontWeight: "bold", fontSize: 18, marginBottom: 6 }}>{label}</div>
-      <div style={{ color: "#888", marginBottom: 2 }}>GDP: <span style={{ color: "#fff" }}>${payload[0]?.value?.toFixed(1)}B</span></div>
-      <div style={{ color: "#888" }}>Per Capita: <span style={{ color: "#fff" }}>${d?.gdpPerCapita}</span></div>
-      <div style={{ color: "#888" }}>Real Gdp:<span style={{ color: "#fff" }}>#{d?.realGdp.toFixed(0)}T</span></div>
-      {d?.event && <div style={{ color: "#f59e0b", marginTop: 10, fontSize: 11, borderTop: "1px solid #222", paddingTop: 8 }}>⚡ {d.event}</div>}
-    </div>
-  );
-};
+  //   if (!active || !payload || !payload.length) return null;
+  //   const d = merged.find(x => x.year === label);
+  //   console.log(d)
+  //   return (
+  //     <div style={{ background: "#0a0a0a", border: "1px solid #2a2a2a", borderRadius: 8, padding: "14px 18px", fontFamily: "monospace", fontSize: 12, color: "#e5e5e5", maxWidth: 220, boxShadow: "0 8px 32px rgba(0,0,0,0.6)" }}>
+  //       <div style={{ color: "#f59e0b", fontWeight: "bold", fontSize: 18, marginBottom: 6 }}>{label}</div>
+  //       <div style={{color: `${metric === 'realGdp' ? 'green' : '#888'}`, marginBottom: 2 }}>Real Gdp:<span style={{ color: "#fff" }}>{compact.format(d?.realGdp)}</span></div>
+  //       <div style={{color: `${metric === 'nairaGdp' ? 'green' : '#888'}`}}>Nominal Gdp: <span style={{ color: "#fff" }}>{compact.format(d?.nairaGdp)}</span></div>
+  //       <div style={{color: `${metric === 'realPerCapita' ? 'green' : '#888'}`}}>Real Per capita: <span style={{ color: "#fff" }}>{compact.format(d?.realPerCapita)}</span></div>
+  //       <div style={{color: `${metric === 'nairaPerCapita' ? 'green' : '#888'}`}}>Nominal Per capita: <span style={{ color: "#fff" }}>{compact.format(d?.nairaPerCapita)}</span></div>
+  //       <div style={{color: `${metric === 'rates' ? 'green' : '#888'}`}}>Naira Rates: <span style={{ color: "#fff" }}>₦{Math.round(d.rates).toLocaleString()}</span></div>
+  //       <div style={{color: `${metric === 'dollarsPer1000' ? 'green' : '#888'}`}}>Dollar Rates: <span style={{ color: "#fff" }}>${d?.dollarsPer1000.toFixed(2)}</span></div>
+  //       {d?.event && <div style={{ color: "#f59e0b", marginTop: 10, fontSize: 11, borderTop: "1px solid #222", paddingTop: 8 }}>⚡ {d.event}</div>}
+  //     </div>
+  //   );
+  // };
+
+  const firstYear = merged[0].year
+  const latestIndex = merged.length - 1
+  const latestYear = merged[latestIndex].year
+
+  const peakOf = key =>
+    merged.reduce((best, d) => (d[key] ?? 0) > (best[key] ?? 0) ? d : best, merged[0]);
+  const yr = (row, key) => (Number.isFinite(row[key]) ? row.year : null);
+  const peakNomGdp = peakOf("nairaGdp");
+  const peakRealGdp = peakOf("realGdp");
+  const peakNomPerCapital = peakOf("nairaPerCapita");
+  const peakRealPerCapital = peakOf("realPerCapita");
+  const peakRates = peakOf("rates");
+
+  useEffect(() => { 
+    console.log(peakNomPerCapital)
+  }, [peakNomPerCapital])
 
   return (
     <div style={{ background: "#080808", minHeight: "100vh", fontFamily: "monospace", color: "#e5e5e5", padding: "32px 24px" }}>
@@ -275,8 +295,8 @@ export default function NigeriaGDP() {
       `}</style>
 
       <div style={{ marginBottom: 32 }}>
-        <div style={{ color: "#f59e0b", fontSize: 10, letterSpacing: 4, textTransform: "uppercase", marginBottom: 6 }}>World Bank · 1960–2024 · {metric === "realGdp" ? "Inflation-adjusted ₦ · 2015 prices" : "Nominal USD"}</div>
-        <div style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(40px,7vw,80px)", color: "#fff", lineHeight: 1, letterSpacing: 2 }}>NIGERIA GDP</div>
+        <div style={{ color: "#f59e0b", fontSize: 10, letterSpacing: 4, textTransform: "uppercase", marginBottom: 6 }}>World Bank · {`${firstYear} - ${latestYear}` } · {metric === "realGdp" ? "Inflation-adjusted ₦ · 2015 prices" : "Nominal USD"}</div>
+        <div style={{ fontFamily: "'Bebas Neue', cursive", fontSize: "clamp(40px,7vw,80px)", color: "#fff", lineHeight: 1, letterSpacing: 2 }}>NIGERIA ECONOMIC STATS</div>
         <div style={{ color: "#444", fontSize: 11, marginTop: 8, maxWidth: 520, lineHeight: 1.7 }}>
           64 years of booms, crashes, coups, and corruption — every political rupture visible in the numbers. Hover any point for details.
         </div>
@@ -284,26 +304,71 @@ export default function NigeriaGDP() {
 
       <div style={{ display: "flex", gap: 10, marginBottom: 28, flexWrap: "wrap" }}>
         {[
-          { label: "1960 GDP", val: "$4.2B", sub: "Year of independence" },
-          { label: "All-Time Peak", val: "$647B", sub: "2022 nominal USD" },
-          { label: "2024 GDP", val: "$252B", sub: "After naira collapse" },
-          { label: "Per Capita Peak", val: "$1,887", sub: "2022 — then crashed" },
+          { label: `${firstYear} GDP`, val: { nom: compact.format(nairaGdp[firstYear]), real: compact.format(realGdp[firstYear]) }, sub: "Year of independence, Real is in 2015 naira, so it looks bigger than nominal" },
+          {
+            label: "All-Time Peak",
+            val: {
+              nomGdp: compact.format(peakNomGdp.nairaGdp),
+              realGdp: compact.format(realGdp[peakRealGdp.year]),
+              nomPc: compact.format(peakNomPerCapital.nairaPerCapita),
+              realPc: compact.format(peakRealPerCapital.realPerCapita),
+              rate: Math.round(peakRates.rates).toLocaleString(),
+            },
+            years: {
+              nomGdp: yr(peakNomGdp, "nairaGdp"),
+              realGdp: yr(peakRealGdp, "realGdp"),
+              nomPc: yr(peakNomPerCapital, "nairaPerCapita"),
+              realPc: yr(peakRealPerCapital, "realPerCapita"),
+              rate: yr(peakRates, "rates"),
+            },
+            sub: "Highest yearly value of each",
+          },
+          { label: `${latestYear} GDP`, val: { nom: compact.format(nairaGdp[latestYear]), real: compact.format(realGdp[latestYear]) }, sub: "After naira collapse" },
+          { label: "Per Capita Peak", val: { nomPc: compact.format(peakNomPerCapital.nairaPerCapita), realPc: compact.format(peakRealPerCapital.realPerCapita) },
+            sub: { nom: `Nominal peak: ${peakNomPerCapital.year}`, real: `Real peak: ${peakRealPerCapital.year}` } },
           { label: "Recessions", val: "5+", sub: "82, 84, 94, 2016, 2020" },
-        ].map(s => (
-          <div key={s.label} className="scard">
-            <div style={{ color: "#555", fontSize: 9, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>{s.label}</div>
-            <div style={{ color: "#f59e0b", fontFamily: "'Bebas Neue', cursive", fontSize: 26 }}>{s.val}</div>
-            <div style={{ color: "#444", fontSize: 9, marginTop: 2 }}>{s.sub}</div>
-          </div>
-        ))}
+        ].map(s => {
+          const rows = typeof s.val === "string" ? null : Object.entries(s.val);
+          const subs = typeof s.sub === "string" ? [s.sub] : Object.values(s.sub);
+          const valLabels = {
+            nom: "Nominal",
+            real: "Real",
+            nomGdp: "Nominal GDP",
+            realGdp: "Real GDP",
+            nomPc: "Nominal per capita",
+            realPc: "Real per capita",
+            rate: "Exchange rate",
+          };
+          return (
+            <div key={s.label} className="scard">
+              <div style={{ color: "#555", fontSize: 9, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>{s.label}</div>
+
+              {rows ? rows.map(([k, v]) => (
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 14, marginBottom: 4 }}>
+                  <span style={{ color: "#666", fontSize: 10 }}>{valLabels[k]}</span>
+                  <span style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                    <span style={{ color: "#f59e0b", fontFamily: "'Bebas Neue', cursive", fontSize: 20, letterSpacing: 0.5 }}>₦{v}</span>
+                    {s.years?.[k] && <span style={{ color: "#555", fontSize: 9 }}>{s.years[k]}</span>}
+                  </span>
+                </div>
+              )) : (
+                <div style={{ color: "#f59e0b", fontFamily: "'Bebas Neue', cursive", fontSize: 26 }}>{s.val}</div>
+              )}
+
+              <div style={{ marginTop: 8, paddingTop: 6, borderTop: "1px solid #1c1c1c" }}>
+                {subs.map(t => <div key={t} style={{ color: "#444", fontSize: 9, marginTop: 2 }}>{t}</div>)}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
         <button className={`tog ${metric === "realGdp" ? "on" : ""}`} onClick={() => setMetric("realGdp")}>Real GDP (#)</button>
         <button className={`tog ${metric === "nairaGdp" ? "on" : ""}`} onClick={() => setMetric("nairaGdp")}>Nominal GDP (#)</button>
-        <button className={`tog ${metric === "realPerCapita" ? "on" : ""}`} onClick={() => setMetric("realPerCapita")}>Per Capita (#)</button>
+        <button className={`tog ${metric === "realPerCapita" ? "on" : ""}`} onClick={() => setMetric("realPerCapita")}>Real Per Capita (#)</button>
         <button className={`tog ${metric === "nairaPerCapita" ? "on" : ""}`} onClick={() => setMetric("nairaPerCapita")}>Per Capita (#)</button>
-        <button className={`tog ${metric === "dollarsPer1000 || rates" ? "on" : ""}`} onClick={() => setMetric((prev) => prev === "dollarsPer1000" ? "rates" : "dollarsPer1000")}>Rates (#)</button>
+        <button className={`tog ${metric === "dollarsPer1000 || rates" ? "on" : ""}`} onClick={() => setMetric((prev) => prev === "dollarsPer1000" ? "rates" : "dollarsPer1000")}>{metric === "dollarsPer1000" ? "Dollar Per 1000" : "Rates(#)"}</button>
       </div>
 
         {
@@ -329,15 +394,15 @@ export default function NigeriaGDP() {
               tick={{ fill: "#444", fontSize: 10, fontFamily: "monospace" }} 
               tickLine={false} 
               axisLine={false} 
-              tickFormatter={v => metric === "realGdp" ? `₦${v}T`  
-              : metric === "nairaGdp" ? `₦${compact.format(v)}`
-              : metric === "realPerCapita" ? `₦${compact.format(v)}`
-              : metric === "nairaPerCapita" ? `₦${compact.format(v)}`
-              : metric === "rate" ? `₦${v >= 10 ? Math.round(v).toLocaleString() : v.toFixed(2)}`
-              : metric === "dollarsPer1000" ? `$${v >= 10 ? Math.round(v).toLocaleString() : v.toFixed(2)}`
-              : `₦${v}`} 
+              tickFormatter={v =>
+                metric === "realGdp" ? `₦${v.toFixed(0)}T`
+                : metric === "nairaGdp" || metric === "nairaPerCapita" || metric === "realPerCapita" ? `₦${compact.format(v)}`
+                : metric === "rate" ? `₦${v >= 10 ? Math.round(v).toLocaleString() : v.toFixed(2)}`
+                : metric === "dollarsPer1000" ? `$${v >= 10 ? Math.round(v).toLocaleString() : v.toFixed(2)}`
+                : `$${v.toLocaleString()}`
+              }
               width={58} />
-            <Tooltip content={<CustomTooltip />} />
+            {/* <Tooltip content={<CustomTooltip />} /> */}
             {markers.map(e => (
               <ReferenceLine key={e.year} x={e.year} stroke={e.color} strokeOpacity={0.35} strokeDasharray="4 3" strokeWidth={1} />
             ))}
