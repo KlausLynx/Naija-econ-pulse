@@ -206,8 +206,6 @@ const views = {
   },
 };
 
-
-
 export default function NigeriaGDP() {
   const [metric, setMetric] = useState("realGdp");
   const [realGdp, setRealGdp] = useState({});
@@ -215,7 +213,7 @@ export default function NigeriaGDP() {
   const [nairaGdp, setNairaGdp] = useState({});
   const [nairaPerCapita, setNairaPerCapita] = useState({});
   const [realPerCapita, setRealPerCapita] = useState({});
-  const [realGdpError, setRealGdpError] = useState(null)
+  // const [realGdpError, setRealGdpError] = useState(null)
   const [activeEra, setActiveEra] = useState(null);
 
   const merged = gdpData.map(d => ({
@@ -230,13 +228,17 @@ export default function NigeriaGDP() {
   const data = merged.map(d => ({ ...d, value: d[metric] }));
   console.log(data)
 
+  const WBDApi = [
+    ["NY.GDP.MKTP.KN", setRealGdp], 
+    ["PA.NUS.FCRF", setRates], 
+    ["NY.GDP.PCAP.CN", setNairaPerCapita],
+    ["NY.GDP.PCAP.KN", setRealPerCapita],
+    ["NY.GDP.MKTP.CN", setNairaGdp]
+  ]
   useEffect(()=> {
-    getWbData("NY.GDP.MKTP.KN").then(setRealGdp)
-    getWbData("PA.NUS.FCRF").then(setRates)
-    getWbData("NY.GDP.PCAP.CN").then(setNairaPerCapita);
-    getWbData("NY.GDP.PCAP.KN").then(setRealPerCapita);
-    getWbData("NY.GDP.MKTP.CN").then(setNairaGdp);
-    
+    WBDApi.forEach(([code, setter]) => {
+      getWbData(code).then(setter)
+    })
   },[])
 
   useEffect(()=> {
