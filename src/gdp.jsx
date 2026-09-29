@@ -3,51 +3,51 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, R
 import './index.css';
 
 const gdpData = [
-  { year: 1960, t: "Independence from Britain" },
-  { year: 1961, t: null },
-  { year: 1962, nt: null },
-  { year: 1963, nt: "First Republic declared" },
-  { year: 1964, nt: null },
-  { year: 1965, nt: null },
-  { year: 1966, nt: "Military coup" },
-  { year: 1967, nt: "Biafra War begins" },
-  { year: 1968, t: "Civil War continues" },
-  { year: 1969, nt: null },
-  { year: 1970, nt: "Civil War ends. Oil boom begins" },
-  { year: 1971, ent: "Joins OPEC" },
-  { year: 1972, ent: null },
-  { year: 1973, ent: "Global oil price spike" },
-  { year: 1974, ent: "Peak oil revenue era" },
-  { year: 1975, ent: "Gowon ousted" },
-  { year: 1976, ent: null },
-  { year: 1977, ent: "Oil wealth peak" },
-  { year: 1978, ent: null },
-  { year: 1979, ent: "Return to democracy" },
-  { year: 1980, ent: "Pre-oil crash peak" },
-  { year: 1981, vent: "Oil price crash begins" },
-  { year: 1982, vent: null },
-  { year: 1983, vent: "Buhari coup" },
-  { year: 1984, ent: "Austerity measures" },
-  { year: 1985, ent: "Babangida takes power" },
-  { year: 1986, ent: "SAP introduced — World Bank" },
-  { year: 1987, ent: null },
-  { year: 1988, ent: null },
-  { year: 1989, ent: null },
-  { year: 1990, ent: "Oil recovery" },
-  { year: 1991, ent: null },
-  { year: 1992, ent: null },
-  { year: 1993, ent: "Annulled elections / crisis" },
-  { year: 1994, ent: "Abacha seizes power" },
-  { year: 1995, vent: "Ken Saro-Wiwa executed" },
-  { year: 1996, vent: null },
-  { year: 1997, vent: null },
-  { year: 1998, vent: "Abacha dies" },
-  { year: 1999, ent: "Democracy restored — Obasanjo" },
-  { year: 2000, ent: "Oil boom 2.0 begins" },
-  { year: 2001, ent: null },
-  { year: 2002, ent: null },
-  { year: 2003, ent: null },
-  { year: 2004, ent: null },
+  { year: 1960, event: "Independence from Britain" },
+  { year: 1961, event: null },
+  { year: 1962, event: null },
+  { year: 1963, event: "First Republic declared" },
+  { year: 1964, event: null },
+  { year: 1965, event: null },
+  { year: 1966, event: "Military coup" },
+  { year: 1967, event: "Biafra War begins" },
+  { year: 1968, event: "Civil War continues" },
+  { year: 1969, event: null },
+  { year: 1970, event: "Civil War ends. Oil boom begins" },
+  { year: 1971, event: "Joins OPEC" },
+  { year: 1972, event: null },
+  { year: 1973, event: "Global oil price spike" },
+  { year: 1974, event: "Peak oil revenue era" },
+  { year: 1975, event: "Gowon ousted" },
+  { year: 1976, event: null },
+  { year: 1977, event: "Oil wealth peak" },
+  { year: 1978, event: null },
+  { year: 1979, event: "Return to democracy" },
+  { year: 1980, event: "Pre-oil crash peak" },
+  { year: 1981, event: "Oil price crash begins" },
+  { year: 1982, event: null },
+  { year: 1983, event: "Buhari coup" },
+  { year: 1984, event: "Austerity measures" },
+  { year: 1985, event: "Babangida takes power" },
+  { year: 1986, event: "SAP introduced — World Bank" },
+  { year: 1987, event: null },
+  { year: 1988, event: null },
+  { year: 1989, event: null },
+  { year: 1990, event: "Oil recovery" },
+  { year: 1991, event: null },
+  { year: 1992, event: null },
+  { year: 1993, event: "Annulled elections / crisis" },
+  { year: 1994, eevnt: "Abacha seizes power" },
+  { year: 1995, event: "Ken Saro-Wiwa executed" },
+  { year: 1996, event: null },
+  { year: 1997, event: null },
+  { year: 1998, event: "Abacha dies" },
+  { year: 1999, event: "Democracy restored — Obasanjo" },
+  { year: 2000, event: "Oil boom 2.0 begins" },
+  { year: 2001, event: null },
+  { year: 2002, event: null },
+  { year: 2003, event: null },
+  { year: 2004, event: null },
   { year: 2005, event: "Paris Club debt relief" },
   { year: 2006, event: null },
   { year: 2007, event: "Yar'Adua elected" },
@@ -76,63 +76,42 @@ const eras = [
     "range": "1960–1966",
     "label": "Post-Independence",
     "color": "#22c55e",
-    "gdpUSD": "$4.2B → $6.4B",
-    "gdpNaira": "₦3.0B → ₦4.6B",
-    "worthTodayNaira": "₦61.2T → ₦85.1T",
     "desc": "Agriculture-led economy. Groundnuts, palm oil, cocoa. Nearly food self-sufficient before oil consumed everything."
   },
   {
     "range": "1967–1970",
     "label": "Civil War / Biafra",
     "color": "#ef4444",
-    "gdpUSD": "$5.2B → $12.5B",
-    "gdpNaira": "₦4.3B → ₦10.3B",
-    "worthTodayNaira": "₦55.9T → ₦138.3T",
     "desc": "1–3 million died, mostly from starvation. Southeast deliberately blockaded. Economy devastated in Igbo regions."
   },
   {
     "range": "1971–1981",
     "label": "Oil Boom",
     "color": "#f59e0b",
-    "gdpUSD": "$9.2B → $164.5B",
-    "gdpNaira": "₦6.7B → ₦100.3B",
-    "worthTodayNaira": "₦99.8T → ₦743.5T",
     "desc": "Petrodollar explosion. Agriculture abandoned. Imports exploded. A generation of leaders built nothing lasting with the wealth."
   },
   {
     "range": "1982–1998",
     "label": "The Lost Decades",
     "color": "#ef4444",
-    "gdpUSD": "$142.8B → $218.4B (official) / $59.1B (real, post-1999 float)",
-    "gdpNaira": "₦96.1B → ₦4.78T (official)",
-    "worthTodayNaira": "₦649.0T → ₦567.9T (official) / ₦149.0T (real)",
     "desc": "Oil prices crashed. World Bank forced SAP. Naira devalued. Abacha stole billions. GDP per capita collapsed 66%."
   },
   {
     "range": "1999–2014",
     "label": "Democratic Growth",
     "color": "#22c55e",
-    "gdpUSD": "$59.1B → $574.2B",
-    "gdpNaira": "₦5.4T → ₦90.7T",
-    "worthTodayNaira": "₦149.0T → ₦1,030.8T",
     "desc": "Democracy returned. Telecoms, Nollywood, banking boomed. 2014 rebasing revealed the economy was always bigger."
   },
   {
     "range": "2015–2024",
     "label": "Volatility & Crash",
     "color": "#ef4444",
-    "gdpUSD": "$493.0B → $187.8B (World Bank) / $254.5B (NBS rebased)",
-    "gdpNaira": "₦98.1T → ₦372.8T (rebased)",
-    "worthTodayNaira": "₦872.5T → ₦272.7T (WB) / ₦352.5T (rebased)",
     "desc": "Two recessions. COVID. Then Tinubu's 2023 naira float cut dollar GDP in half overnight. Back to 2006 levels."
   },
   {
     "range": "2025–Present",
     "label": "Rebasing & Recovery",
-    "color": "#22c55e",
-    "gdpUSD": "$285B → ~$334B (2026 IMF projection)",
-    "gdpNaira": "~₦427T → ~₦444T",
-    "worthTodayNaira": "~₦389.7T → ~₦444.2T",
+    "color": "#22c55e",   
     "desc": "GDP rebasing revealed a much bigger informal economy. Naira strengthened from ~₦1,600/$ (mid-2024 low) to ~₦1,330/$ by Sept 2026. IMF credits reforms — subsidy removal, FX unification — with the rebound; projects Nigeria overtaking Algeria as Africa's 3rd-largest economy in 2026."
   }
 ]
@@ -170,24 +149,6 @@ const leaderChanges = [
   { year: 2015, color: "#fff", label: "Buhari (civilian)" },
   { year: 2023, color: "#fff", label: "Tinubu" },
 ];
-
-const markers = [...keyEvents, ...leaderChanges].sort((a, b) => a.year - b.year);
-
-const getWbData = async (indicator) => {
-  const url = `https://api.worldbank.org/v2/country/NGA/indicator/${indicator}?format=json&per_page=100&date=1960:2025`;
-  const response = await fetch(url)
-  if (!response.ok) {
-    throw new Error('Request failed:' + response.status)
-  }
-  const data = await response.json()
-  let mainData = {}
-  data[1].forEach(sepData => {
-    if (sepData.value !== null) {
-      mainData[Number(sepData.date)] = sepData.value
-    }
-  })
-  return mainData
-}
 
 const views = {
   realGdp: {
@@ -268,7 +229,39 @@ export default function NigeriaGDP() {
     realPerCapita: realPerCapita[d.year] ?? null,
     nairaPerCapita: nairaPerCapita[d.year] ?? null
   }))
+
   const data = merged.map(d => ({ ...d, value: d[metric] }));
+
+  const markers = [...keyEvents, ...leaderChanges].sort((a, b) => a.year - b.year);
+
+  const getWbData = async (indicator) => {
+    const key = indicator;
+    const saved = localStorage.getItem(key);
+    
+    const ExpiryDate = 7 * 24 * 60 * 60 * 1000
+
+    if(saved) {
+      const cached = JSON.parse(saved)
+      if (Date.now() - cached.savedAt < ExpiryDate) {
+        return cached.data
+      }
+    }
+
+    const url = `https://api.worldbank.org/v2/country/NGA/indicator/${indicator}?format=json&per_page=100&date=1960:2025`;
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error('Request failed:' + response.status)
+    }
+    const data = await response.json()
+    let mainData = {}
+    data[1].forEach(sepData => {
+      if (sepData.value !== null) {
+        mainData[Number(sepData.date)] = sepData.value
+      }
+    })
+    localStorage.setItem(key, JSON.stringify({savedAt: Date.now(), data: mainData}))
+    return mainData
+  }
 
   const WBDApi = [
     ["NY.GDP.MKTP.KN", setRealGdp],
@@ -278,6 +271,7 @@ export default function NigeriaGDP() {
     ["NY.GDP.MKTP.CN", setNairaGdp],
     ["FP.CPI.TOTL", setCpi]
   ]
+
   useEffect(() => {
     WBDApi.forEach(([code, setter]) => {
       getWbData(code).then(setter)
@@ -435,112 +429,6 @@ export default function NigeriaGDP() {
 
   return (
     <div className="ng-root">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap');
-
-        .ng-root, .ng-root * { box-sizing: border-box; }
-        .ng-root {
-          background: #080808;
-          min-height: 100vh;
-          width: 100%;
-          font-family: monospace;
-          color: #e5e5e5;
-          font-size: clamp(15px, 0.35vw + 14px, 18px);
-          line-height: 1.5;
-          padding: clamp(16px, 3vw, 48px);
-          overflow-x: hidden;
-        }
-        .ng-wrap { max-width: 1400px; margin: 0 auto; }
-
-        /* Header */
-        .ng-head { margin-bottom: clamp(24px, 3vw, 40px); }
-        .ng-eyebrow { color: #f59e0b; font-size: clamp(12px, 0.5vw + 10px, 15px); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px; }
-        .ng-title { font-family: 'Bebas Neue', cursive; font-size: clamp(40px, 8vw, 96px); color: #fff; line-height: 1; letter-spacing: 2px; word-break: break-word; }
-        .ng-intro { color: #777; font-size: clamp(14px, 0.5vw + 12px, 18px); margin-top: 12px; max-width: 680px; line-height: 1.7; }
-
-        /* Stat cards */
-        .ng-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(10px, 1.5vw, 16px); margin-bottom: clamp(24px, 3vw, 36px); }
-        @media (max-width: 1200px) { .ng-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-        @media (max-width: 800px)  { .ng-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        @media (max-width: 520px)  { .ng-stats { grid-template-columns: 1fr; } }
-        .scard { background: #0f0f0f; border: 1px solid #1a1a1a; border-radius: 8px; padding: clamp(14px, 1.6vw, 22px); min-width: 0; }
-        .scard-label { color: #888; font-size: clamp(12px, 0.3vw + 11px, 14px); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-        .scard-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
-        .scard-key { color: #888; font-size: clamp(12px, 0.3vw + 11px, 15px); }
-        .scard-valwrap { display: flex; align-items: baseline; gap: 8px; }
-        .scard-val { color: #f59e0b; font-family: 'Bebas Neue', cursive; font-size: clamp(22px, 1.2vw + 16px, 30px); letter-spacing: 0.5px; }
-        .scard-big { color: #f59e0b; font-family: 'Bebas Neue', cursive; font-size: clamp(30px, 2vw + 20px, 44px); }
-        .scard-year { color: #777; font-size: clamp(11px, 0.3vw + 10px, 13px); }
-        .scard-subs { margin-top: 10px; padding-top: 8px; border-top: 1px solid #1c1c1c; }
-        .scard-sub { color: #777; font-size: clamp(12px, 0.3vw + 11px, 14px); margin-top: 3px; line-height: 1.5; }
-
-        /* Toggle buttons */
-        .ng-toggles { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tog { background: transparent; border: 1px solid #2a2a2a; color: #888; padding: clamp(9px, 1vw, 12px) clamp(12px, 1.5vw, 22px); font-family: monospace; font-size: clamp(12px, 0.3vw + 11px, 15px); cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; }
-        .tog.on { background: #f59e0b; border-color: #f59e0b; color: #000; font-weight: bold; }
-        .tog:hover:not(.on) { border-color: #f59e0b; color: #f59e0b; }
-        .ng-note { color: #999; font-size: clamp(14px, 0.4vw + 12px, 17px); margin-bottom: 16px; max-width: 680px; line-height: 1.7; }
-
-        /* Chart */
-        .ng-chart { background: #0c0c0c; border: 1px solid #181818; border-radius: 10px; padding: 20px 4px 14px; margin-bottom: clamp(24px, 3vw, 40px); }
-        .ng-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 14px clamp(12px, 2vw, 24px) 0; border-top: 1px solid #161616; margin-top: 10px; max-height: 190px; overflow-y: auto; }
-        .ng-legend-item { display: flex; align-items: center; gap: 6px; }
-        .ng-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-        .ng-legend-text { color: #777; font-size: clamp(12px, 0.3vw + 11px, 14px); }
-
-        /* Section titles */
-        .ng-h2 { font-family: 'Bebas Neue', cursive; font-size: clamp(30px, 3vw, 44px); color: #fff; letter-spacing: 2px; margin-bottom: 16px; }
-        .ng-section { margin-bottom: clamp(28px, 4vw, 48px); }
-
-        /* Eras */
-        .ng-eras { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: clamp(10px, 1.5vw, 16px); align-items: start; }
-        .era { padding: clamp(14px, 1.6vw, 22px); background: linear-gradient(160deg, #141414 0%, #0d0d0d 100%); border: 1px solid #1f1f1f; border-left: 3px solid var(--c); border-radius: 10px; cursor: pointer; outline: none; min-width: 0; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
-        .era:hover, .era:focus-visible { transform: translateY(-2px); box-shadow: 0 8px 24px -12px color-mix(in srgb, var(--c) 55%, transparent); }
-        .era-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .era-pill { font-size: clamp(12px, 0.3vw + 11px, 14px); font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); padding: 4px 10px; border-radius: 999px; }
-        .era-chev { font-size: 16px; color: #666; transition: transform .25s ease, color .2s ease; }
-        .era-chev.open { transform: rotate(180deg); color: var(--c); }
-        .era-title { color: #fff; font-size: clamp(18px, 0.8vw + 14px, 24px); font-weight: 700; line-height: 1.3; margin-bottom: 14px; }
-        .era-stats { display: grid; gap: 8px; padding-top: 12px; border-top: 1px solid #1f1f1f; }
-        .era-row { display: flex; align-items: baseline; justify-content: space-between; gap: 6px 14px; flex-wrap: wrap; }
-        .era-label { font-size: clamp(11px, 0.3vw + 10px, 13px); letter-spacing: 0.8px; text-transform: uppercase; color: #888; }
-        .era-value { font-size: clamp(14px, 0.4vw + 12px, 17px); font-weight: 600; color: #f59e0b; text-align: right; margin-left: auto; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-        .era-worth { margin-top: 4px; padding: 9px 12px; background: #101010; border: 1px dashed #2a2a2a; border-radius: 6px; }
-        .era-worth .era-value { color: #fff; }
-        .era-desc-wrap { display: grid; transition: grid-template-rows .3s ease; }
-        .era-desc-inner { overflow: hidden; }
-        .era-desc { margin-top: 12px; padding-top: 12px; border-top: 1px solid #1f1f1f; color: #aaa; font-size: clamp(14px, 0.4vw + 12px, 17px); line-height: 1.75; }
-        .era-hint { margin-top: 12px; font-size: clamp(11px, 0.3vw + 10px, 13px); letter-spacing: 1px; text-transform: uppercase; color: #666; }
-
-        /* Time machine */
-        .tm-card { background: #0c0c0c; border: 1px solid #181818; border-radius: 10px; padding: clamp(16px, 2.5vw, 32px); max-width: 680px; width: 100%; margin: 0 auto; }
-        .tm-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
-        .tm-field { flex: 1 1 160px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
-        .tm-label { color: #888; font-size: clamp(12px, 0.3vw + 11px, 14px); letter-spacing: 1px; text-transform: uppercase; }
-        .tm-input { width: 100%; background: #080808; border: 1px solid #2a2a2a; color: #e5e5e5; padding: 12px 14px; font-family: monospace; font-size: 16px; border-radius: 4px; outline: none; transition: border-color 0.2s; }
-        .tm-input:focus { border-color: #f59e0b; }
-        .tm-error { color: #ef4444; font-size: clamp(12px, 0.3vw + 11px, 14px); line-height: 1.4; }
-        .tm-btn { width: 100%; background: #f59e0b; border: 1px solid #f59e0b; color: #000; padding: 13px 18px; font-family: monospace; font-size: clamp(13px, 0.3vw + 12px, 16px); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
-        .tm-btn:hover { background: #fbbf24; border-color: #fbbf24; }
-        .tm-result { margin-top: 22px; padding: 16px 18px; background: #101010; border: 1px dashed #2a2a2a; border-radius: 6px; color: #aaa; font-size: clamp(14px, 0.4vw + 12px, 17px); line-height: 1.75; overflow-wrap: anywhere; }
-        .tm-result b { color: #f59e0b; font-weight: 600; }
-
-        /* Tooltip */
-        .tt-box { background: #0a0a0a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 14px 18px; font-family: monospace; color: #e5e5e5; font-size: clamp(13px, 0.3vw + 12px, 16px); max-width: min(300px, 80vw); box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
-        .tt-year { color: #f59e0b; font-weight: bold; font-size: clamp(20px, 1vw + 16px, 26px); margin-bottom: 8px; }
-        .tt-row { color: #888; margin-bottom: 3px; }
-        .tt-row span { color: #fff; }
-        .tt-row.on { color: #22c55e; }
-        .tt-note { color: #f59e0b; margin-top: 10px; padding-top: 8px; border-top: 1px solid #222; font-size: 0.9em; line-height: 1.5; }
-
-        @media (max-width: 480px) {
-          .tog { flex: 1 1 calc(50% - 8px); text-align: center; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .era, .era-chev, .era-desc-wrap { transition: none; }
-        }
-      `}</style>
-
       <div className="ng-wrap">
         <div className="ng-head">
           <div className="ng-eyebrow">World Bank · {`${firstYear} - ${latestYear}`} · {views[metric].tag}</div>
@@ -656,21 +544,6 @@ export default function NigeriaGDP() {
                   </div>
 
                   <div className="era-title">{e.label}</div>
-
-                  <div className="era-stats">
-                    <div className="era-row">
-                      <span className="era-label">GDP (USD)</span>
-                      <span className="era-value">{e.gdpUSD}</span>
-                    </div>
-                    <div className="era-row">
-                      <span className="era-label">GDP (Naira)</span>
-                      <span className="era-value">{e.gdpNaira}</span>
-                    </div>
-                    <div className="era-row era-worth">
-                      <span className="era-label">Worth at today's rate</span>
-                      <span className="era-value">{e.worthTodayNaira}</span>
-                    </div>
-                  </div>
 
                   <div className="era-desc-wrap" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
                     <div className="era-desc-inner">
