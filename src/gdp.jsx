@@ -37,7 +37,7 @@ const gdpData = [
   { year: 1991, event: null },
   { year: 1992, event: null },
   { year: 1993, event: "Annulled elections / crisis" },
-  { year: 1994, eevnt: "Abacha seizes power" },
+  { year: 1994, event: "Abacha seizes power" },
   { year: 1995, event: "Ken Saro-Wiwa executed" },
   { year: 1996, event: null },
   { year: 1997, event: null },
@@ -111,7 +111,7 @@ const eras = [
   {
     "range": "2025–Present",
     "label": "Rebasing & Recovery",
-    "color": "#22c55e",   
+    "color": "#22c55e",
     "desc": "GDP rebasing revealed a much bigger informal economy. Naira strengthened from ~₦1,600/$ (mid-2024 low) to ~₦1,330/$ by Sept 2026. IMF credits reforms — subsidy removal, FX unification — with the rebound; projects Nigeria overtaking Algeria as Africa's 3rd-largest economy in 2026."
   }
 ]
@@ -181,7 +181,8 @@ const views = {
   },
 };
 
-// Tracks the screen width so the chart can resize its height, ticks and spacing
+const compact = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 });
+
 function useWindowWidth() {
   const [width, setWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
   useEffect(() => {
@@ -190,6 +191,31 @@ function useWindowWidth() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
   return width;
+}
+
+function CustomTooltip({ active, payload, label, metric }) {
+  if (!active || !payload || !payload.length) return null;
+  const d = payload[0].payload;
+
+  const row = (key, name, text) => (
+    <div className={`tt-row ${metric === key ? "on" : ""}`}>
+      {name}: <span>{text}</span>
+    </div>
+  );
+
+  return (
+    <div className="tt-box">
+      <div className="tt-year">{label}</div>
+      {row("realGdp", "Real GDP", d.realGdp == null ? "—" : `₦${d.realGdp.toFixed(1)}T`)}
+      {row("nairaGdp", "Nominal GDP", d.nairaGdp == null ? "—" : `₦${compact.format(d.nairaGdp)}`)}
+      {row("realPerCapita", "Real per capita", d.realPerCapita == null ? "—" : `₦${compact.format(d.realPerCapita)}`)}
+      {row("nairaPerCapita", "Nominal per capita", d.nairaPerCapita == null ? "—" : `₦${compact.format(d.nairaPerCapita)}`)}
+      {row("rates", "Naira rate", d.rates == null ? "—" : `₦${Math.round(d.rates).toLocaleString()} / $1`)}
+      {row("dollarsPer1000", "₦1,000 buys", d.dollarsPer1000 == null ? "—" : `$${d.dollarsPer1000.toFixed(2)}`)}
+      {row("cpi", "CPI", d.cpi == null ? "—" : d.cpi.toFixed(1))}
+      {d.event && <div className="tt-note">⚡ {d.event}</div>}
+    </div>
+  );
 }
 
 export default function NigeriaGDP() {
@@ -237,7 +263,7 @@ export default function NigeriaGDP() {
   const getWbData = async (indicator) => {
     const key = indicator;
     const saved = localStorage.getItem(key);
-    
+
     const ExpiryDate = 7 * 24 * 60 * 60 * 1000
 
     if(saved) {
@@ -263,22 +289,19 @@ export default function NigeriaGDP() {
     return mainData
   }
 
-  const WBDApi = [
-    ["NY.GDP.MKTP.KN", setRealGdp],
-    ["PA.NUS.FCRF", setRates],
-    ["NY.GDP.PCAP.CN", setNairaPerCapita],
-    ["NY.GDP.PCAP.KN", setRealPerCapita],
-    ["NY.GDP.MKTP.CN", setNairaGdp],
-    ["FP.CPI.TOTL", setCpi]
-  ]
-
   useEffect(() => {
+    const WBDApi = [
+      ["NY.GDP.MKTP.KN", setRealGdp],
+      ["PA.NUS.FCRF", setRates],
+      ["NY.GDP.PCAP.CN", setNairaPerCapita],
+      ["NY.GDP.PCAP.KN", setRealPerCapita],
+      ["NY.GDP.MKTP.CN", setNairaGdp],
+      ["FP.CPI.TOTL", setCpi]
+    ]
     WBDApi.forEach(([code, setter]) => {
       getWbData(code).then(setter)
     })
   }, [])
-
-  const compact = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 })
 
   const CPI_BASE_YEAR = 2010
   const firstYear = merged[0].year
@@ -356,33 +379,6 @@ export default function NigeriaGDP() {
     setFromYear('')
     setAmount('')
   }
-
-  const CustomTooltip = ({ active, payload, label }) => {
-    if (!active || !payload || !payload.length) return null;
-    const d = payload[0].payload;
-
-    const row = (key, name, text) => (
-      <div className={`tt-row ${metric === key ? "on" : ""}`}>
-        {name}: <span>{text}</span>
-      </div>
-    );
-
-    const note = d.event ?? d.ent ?? d.vent ?? d.nt ?? d.t;
-
-    return (
-      <div className="tt-box">
-        <div className="tt-year">{label}</div>
-        {row("realGdp", "Real GDP", d.realGdp == null ? "—" : `₦${d.realGdp.toFixed(1)}T`)}
-        {row("nairaGdp", "Nominal GDP", d.nairaGdp == null ? "—" : `₦${compact.format(d.nairaGdp)}`)}
-        {row("realPerCapita", "Real per capita", d.realPerCapita == null ? "—" : `₦${compact.format(d.realPerCapita)}`)}
-        {row("nairaPerCapita", "Nominal per capita", d.nairaPerCapita == null ? "—" : `₦${compact.format(d.nairaPerCapita)}`)}
-        {row("rates", "Naira rate", d.rates == null ? "—" : `₦${Math.round(d.rates).toLocaleString()} / $1`)}
-        {row("dollarsPer1000", "₦1,000 buys", d.dollarsPer1000 == null ? "—" : `$${d.dollarsPer1000.toFixed(2)}`)}
-        {row("cpi", "CPI", d.cpi == null ? "—" : d.cpi.toFixed(1))}
-        {note && <div className="tt-note">⚡ {note}</div>}
-      </div>
-    );
-  };
 
   const valLabels = {
     nom: "Nominal",
@@ -503,7 +499,7 @@ export default function NigeriaGDP() {
                             : `$${v.toLocaleString()}`
                 }
                 width={yAxisWidth} />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip metric={metric} />} />
               {markers.map((e, i) => (
                 <ReferenceLine key={`${e.year}-${i}`} x={e.year} stroke={e.color} strokeOpacity={0.35} strokeDasharray="4 3" strokeWidth={1} />
               ))}
