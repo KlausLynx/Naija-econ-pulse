@@ -392,15 +392,17 @@ export default function NigeriaGDP() {
     now: "Worth today",
   };
 
+  const safe = (n) => Number.isFinite(n) ? compact.format(n) : "0";
+
   const stats = [
-    { label: `${firstYear} GDP`, val: { nom: compact.format(nairaGdp[firstYear]), real: compact.format(realGdp[firstYear]) }, sub: "Year of independence, Real is in 2015 naira, so it looks bigger than nominal" },
+    { label: `${firstYear} GDP`, val: { nom: safe(nairaGdp[firstYear]), real:  safe(realGdp[firstYear]) }, sub: "Year of independence, Real is in 2015 naira, so it looks bigger than nominal" },
     {
       label: "All-Time Peak",
       val: {
-        nomGdp: compact.format(peakNomGdp.nairaGdp),
-        realGdp: compact.format(realGdp[peakRealGdp.year]),
-        nomPc: compact.format(peakNomPerCapital.nairaPerCapita),
-        realPc: compact.format(peakRealPerCapital.realPerCapita),
+        nomGdp: safe(peakNomGdp.nairaGdp),
+        realGdp: safe(realGdp[peakRealGdp.year]),
+        nomPc: safe(peakNomPerCapital.nairaPerCapita),
+        realPc: safe(peakRealPerCapital.realPerCapita),
         rate: Math.round(peakRates.rates).toLocaleString(),
       },
       years: {
@@ -412,13 +414,13 @@ export default function NigeriaGDP() {
       },
       sub: "Highest yearly value of each",
     },
-    { label: `${latestYear} GDP`, val: { nom: compact.format(nairaGdp[latestYear]), real: compact.format(realGdp[latestYear]) }, sub: "After naira collapse" },
+    { label: `${latestYear} GDP`, val: { nom: safe(nairaGdp[latestYear]), real: safe(realGdp[latestYear]) }, sub: "After naira collapse" },
     {
       label: "Per Capita Peak", val: { nomPc: compact.format(peakNomPerCapital.nairaPerCapita), realPc: compact.format(peakRealPerCapital.realPerCapita) },
       sub: { nom: `Nominal peak: ${peakNomPerCapital.year}`, real: `Real peak: ${peakRealPerCapital.year}` }
     },
     { label: "Recessions", val: "5+", sub: "82, 84, 94, 2016, 2020" },
-    { label: "Worth Today", val: { then: "1,000", now: compact.format(1000 * cpi[latestYear] / cpi[CPI_BASE_YEAR]) }, years: { then: 2010, now: latestYear }, sub: `₦1,000 in 2010 needs this much in ${latestYear} to buy the same things` },
+    { label: "Worth Today", val: { then: "1,000", now: safe(1000 * cpi[latestYear] / cpi[CPI_BASE_YEAR]) }, years: { then: 2010, now: latestYear }, sub: `₦1,000 in 2010 needs this much in ${latestYear} to buy the same things` },
   ];
 
   const ratesOn = metric === "rates" || metric === "dollarsPer1000";
@@ -451,11 +453,13 @@ export default function NigeriaGDP() {
                     </span>
                   </div>
                 )) : (
-                  <div className="scard-big">{s.val}</div>
+                  <div className="scard-big">
+                    {String(s.val).includes("NaN") ? 0 : s.val}
+                  </div>
                 )}
 
                 <div className="scard-subs">
-                  {subs.map(t => <div key={t} className="scard-sub">{t}</div>)}
+                  {subs.map(t => <div key={t} className="scard-sub">{String(t).replaceAll("NaN", "0")}</div>)}
                 </div>
               </div>
             );
