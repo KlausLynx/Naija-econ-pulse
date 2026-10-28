@@ -430,7 +430,7 @@ export default function NigeriaGDP() {
       <div className="ng-wrap">
         <div className="ng-head">
           <div className="ng-eyebrow">World Bank · {`${firstYear} - ${latestYear}`} · {views[metric].tag}</div>
-          <div className="ng-title">NIGERIA ECONOMIC STATS</div>
+          <div className="ng-title">NIGERIA MONETARY STATS</div>
           <div className="ng-intro">
             64 years of booms, crashes, coups, and corruption — every political rupture visible in the numbers. Hover any point for details.
           </div>
